@@ -1,0 +1,7 @@
+.footer { border-top: 1px solid #e5e7eb; padding: 24px 0; margin-top: 40px; }
+.inner { display: flex; align-items: center; justify-content: space-between; }
+.links { display: flex; gap: 16px; color: var(--color-muted); }
+.copy { color: var(--color-muted); font-size: 14px; }
+@media (max-width: 640px) { .inner { flex-direction: column; gap: 12px; } }
+
+

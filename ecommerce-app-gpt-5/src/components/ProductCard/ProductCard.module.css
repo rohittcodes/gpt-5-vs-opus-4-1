@@ -1,0 +1,28 @@
+.card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.08); }
+.thumb { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; }
+.body { padding: 12px; }
+.name { font-weight: 600; }
+.priceRow { margin-top: 6px; display: flex; gap: 8px; align-items: center; }
+.price { color: var(--color-accent); font-weight: 700; }
+.oldPrice { color: var(--color-muted); text-decoration: line-through; }
+.cartRow { margin-top: 10px; display: flex; gap: 8px; }
+.btn { flex: 1; padding: 10px 12px; border-radius: 10px; border: 1px solid #e5e7eb; }
+
+.qty {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+}
+.qty button { background: transparent; border: 0; padding: 8px 10px; }
+.qty span { min-width: 28px; text-align: center; }
+
+

@@ -1,0 +1,41 @@
+Keeping it concise per your preference [[memory:3297814]].
+
+I wrote an O(log(min(m,n))) binary-partition solution in Java that handles empty arrays, duplicates, and extreme values safely.
+
+```java
+class Solution {
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        // Ensure nums1 is the smaller array
+        if (nums1.length > nums2.length) return findMedianSortedArrays(nums2, nums1);
+
+        int m = nums1.length, n = nums2.length;
+        int totalLeft = (m + n + 1) / 2;
+        int lo = 0, hi = m;
+
+        while (lo <= hi) {
+            int i = lo + (hi - lo) / 2;      // partition in nums1
+            int j = totalLeft - i;           // partition in nums2
+
+            int Aleft  = (i == 0) ? Integer.MIN_VALUE : nums1[i - 1];
+            int Aright = (i == m) ? Integer.MAX_VALUE : nums1[i];
+            int Bleft  = (j == 0) ? Integer.MIN_VALUE : nums2[j - 1];
+            int Bright = (j == n) ? Integer.MAX_VALUE : nums2[j];
+
+            if (Aleft <= Bright && Bleft <= Aright) {
+                if (((m + n) & 1) == 1) {
+                    return Math.max(Aleft, Bleft);
+                }
+                return ((double)Math.max(Aleft, Bleft) + (double)Math.min(Aright, Bright)) / 2.0;
+            } else if (Aleft > Bright) {
+                hi = i - 1;
+            } else {
+                lo = i + 1;
+            }
+        }
+        return 0.0; // unreachable for valid inputs
+    }
+}
+```
+
+- **Time/Space**: O(log(min(m,n))) time, O(1) space.
+- **Edge cases handled**: one array empty, all elements on one side, duplicates, very small arrays, and `int` extremes via sentinels and safe double averaging.

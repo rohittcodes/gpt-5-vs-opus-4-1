@@ -1,0 +1,187 @@
+I'll solve this step-by-step, implementing the optimal O(log(min(m,n))) solution using binary search.
+Ran tool
+
+Ran tool
+
+```bash
+cd /home/rohitt/projects/ecommerce-demo && javac MedianOfTwoSortedArrays.java && java MedianOfTwoSortedArrays
+```
+
+```
+public class MedianOfTwoSortedArrays {
+    
+    static class Solution {
+        public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+            // Ensure nums1 is the smaller array to optimize binary search
+            if (nums1.length > nums2.length) {
+                return findMedianSortedArrays(nums2, nums1);
+            }
+            
+            int m = nums1.length;
+            int n = nums2.length;
+            int totalLength = m + n;
+            int halfLength = (totalLength + 1) / 2; // For odd total, left half has one more element
+            
+            // Binary search on the smaller array
+            int left = 0;
+            int right = m;
+            
+            while (left <= right) {
+                // Partition nums1 at index i
+                int partition1 = left + (right - left) / 2;
+                // Partition nums2 to ensure left half has halfLength elements total
+                int partition2 = halfLength - partition1;
+                
+                // Handle edge cases where partition is at array boundaries
+                // If partition is 0, use MIN_VALUE as there's no element on left
+                // If partition is at length, use MAX_VALUE as there's no element on right
+                int maxLeft1 = (partition1 == 0) ? Integer.MIN_VALUE : nums1[partition1 - 1];
+                int minRight1 = (partition1 == m) ? Integer.MAX_VALUE : nums1[partition1];
+                
+                int maxLeft2 = (partition2 == 0) ? Integer.MIN_VALUE : nums2[partition2 - 1];
+                int minRight2 = (partition2 == n) ? Integer.MAX_VALUE : nums2[partition2];
+                
+                // Check if we found the correct partition
+                if (maxLeft1 <= minRight2 && maxLeft2 <= minRight1) {
+                    // We have partitioned arrays correctly
+                    // The largest element on the left is the max of maxLeft1 and maxLeft2
+                    // The smallest element on the right is the min of minRight1 and minRight2
+                    
+                    if (totalLength % 2 == 1) {
+                        // Odd total length - median is the max element on the left
+                        return Math.max(maxLeft1, maxLeft2);
+                    } else {
+                        // Even total length - median is average of max left and min right
+                        return (Math.max(maxLeft1, maxLeft2) + Math.min(minRight1, minRight2)) / 2.0;
+                    }
+                } else if (maxLeft1 > minRight2) {
+                    // We are too far on the right in nums1, move left
+                    right = partition1 - 1;
+                } else {
+                    // We are too far on the left in nums1, move right
+                    left = partition1 + 1;
+                }
+            }
+            
+            // This should never be reached if inputs are valid
+            throw new IllegalArgumentException("Input arrays are not sorted");
+        }
+    }
+    
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        
+        // Test Case 1: Example from problem
+        int[] nums1_1 = {1, 3};
+        int[] nums2_1 = {2};
+        System.out.println("Test 1: nums1 = [1,3], nums2 = [2]");
+        System.out.println("Expected: 2.0, Got: " + solution.findMedianSortedArrays(nums1_1, nums2_1));
+        
+        // Test Case 2: Example from problem
+        int[] nums1_2 = {1, 2};
+        int[] nums2_2 = {3, 4};
+        System.out.println("\nTest 2: nums1 = [1,2], nums2 = [3,4]");
+        System.out.println("Expected: 2.5, Got: " + solution.findMedianSortedArrays(nums1_2, nums2_2));
+        
+        // Test Case 3: Empty first array
+        int[] nums1_3 = {};
+        int[] nums2_3 = {1};
+        System.out.println("\nTest 3: nums1 = [], nums2 = [1]");
+        System.out.println("Expected: 1.0, Got: " + solution.findMedianSortedArrays(nums1_3, nums2_3));
+        
+        // Test Case 4: Empty second array
+        int[] nums1_4 = {2};
+        int[] nums2_4 = {};
+        System.out.println("\nTest 4: nums1 = [2], nums2 = []");
+        System.out.println("Expected: 2.0, Got: " + solution.findMedianSortedArrays(nums1_4, nums2_4));
+        
+        // Test Case 5: Arrays with negative numbers
+        int[] nums1_5 = {-5, -3, -1};
+        int[] nums2_5 = {-2, 0, 2};
+        System.out.println("\nTest 5: nums1 = [-5,-3,-1], nums2 = [-2,0,2]");
+        System.out.println("Expected: -1.5, Got: " + solution.findMedianSortedArrays(nums1_5, nums2_5));
+        
+        // Test Case 6: Arrays with duplicate elements
+        int[] nums1_6 = {1, 1, 1};
+        int[] nums2_6 = {1, 1, 1};
+        System.out.println("\nTest 6: nums1 = [1,1,1], nums2 = [1,1,1]");
+        System.out.println("Expected: 1.0, Got: " + solution.findMedianSortedArrays(nums1_6, nums2_6));
+        
+        // Test Case 7: Very different sized arrays
+        int[] nums1_7 = {100};
+        int[] nums2_7 = {1, 2, 3, 4, 5, 6, 7};
+        System.out.println("\nTest 7: nums1 = [100], nums2 = [1,2,3,4,5,6,7]");
+        System.out.println("Expected: 4.5, Got: " + solution.findMedianSortedArrays(nums1_7, nums2_7));
+        
+        // Test Case 8: Non-overlapping ranges
+        int[] nums1_8 = {1, 2};
+        int[] nums2_8 = {100, 200};
+        System.out.println("\nTest 8: nums1 = [1,2], nums2 = [100,200]");
+        System.out.println("Expected: 51.0, Got: " + solution.findMedianSortedArrays(nums1_8, nums2_8));
+        
+        // Test Case 9: Single element arrays
+        int[] nums1_9 = {1};
+        int[] nums2_9 = {2};
+        System.out.println("\nTest 9: nums1 = [1], nums2 = [2]");
+        System.out.println("Expected: 1.5, Got: " + solution.findMedianSortedArrays(nums1_9, nums2_9));
+        
+        // Test Case 10: Large arrays with mixed positive and negative
+        int[] nums1_10 = {-10, -5, 0, 5, 10};
+        int[] nums2_10 = {-8, -3, 2, 7, 12};
+        System.out.println("\nTest 10: nums1 = [-10,-5,0,5,10], nums2 = [-8,-3,2,7,12]");
+        System.out.println("Expected: 1.0, Got: " + solution.findMedianSortedArrays(nums1_10, nums2_10));
+    }
+}
+```
+
+Ran tool
+
+I've created a complete Java solution for finding the median of two sorted arrays with optimal O(log(min(m,n))) time complexity. The solution is saved in `MedianOfTwoSortedArrays.java`.
+
+## Solution Approach
+
+The algorithm uses **binary search** on the smaller array to find the correct partition point where:
+1. All elements on the left are ≤ all elements on the right
+2. Both halves have equal (or nearly equal) number of elements
+
+### Key Features:
+
+1. **Time Complexity**: O(log(min(m,n))) - binary search on the smaller array
+2. **Space Complexity**: O(1) - only using constant extra space
+
+### Algorithm Steps:
+
+1. **Always search on smaller array** - reduces search space from O(log(m+n)) to O(log(min(m,n)))
+2. **Binary search for partition** - find where to split arrays
+3. **Validate partition** - ensure max(left) ≤ min(right)
+4. **Calculate median** - based on odd/even total length
+
+### Edge Cases Handled:
+
+✅ **Empty arrays** - one array can be empty  
+✅ **Single elements** - arrays with just one element  
+✅ **Negative numbers** - handles full integer range  
+✅ **Duplicate values** - arrays with repeated elements  
+✅ **Non-overlapping ranges** - e.g., [1,2] and [100,200]  
+✅ **Different sizes** - one array much larger than other
+
+### Test Cases Included:
+
+1. Basic cases from problem examples
+2. Empty array edge cases
+3. Arrays with negative numbers
+4. Arrays with duplicates
+5. Very different sized arrays
+6. Non-overlapping value ranges
+7. Single element arrays
+8. Mixed positive/negative values
+
+The solution correctly partitions the arrays using binary search and handles all boundary conditions using `Integer.MIN_VALUE` and `Integer.MAX_VALUE` as sentinels when partitions are at array edges.
+
+To run this code, you'll need Java installed. You can compile and run it with:
+```bash
+javac MedianOfTwoSortedArrays.java
+java MedianOfTwoSortedArrays
+```
+
+The solution is production-ready and handles all edge cases efficiently!

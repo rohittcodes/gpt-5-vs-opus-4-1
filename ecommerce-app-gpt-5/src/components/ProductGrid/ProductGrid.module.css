@@ -1,0 +1,10 @@
+.section { padding: 32px 0 64px; }
+.header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 16px; }
+.title { font-size: 22px; font-weight: 700; }
+.filters { display: flex; gap: 10px; }
+.filterBtn { border: 1px solid #e5e7eb; border-radius: 9999px; padding: 8px 12px; background: #fff; }
+.grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 1024px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+
