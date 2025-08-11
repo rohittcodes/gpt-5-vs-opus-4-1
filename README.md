@@ -1,6 +1,6 @@
 ## GPT-5 vs Claude Opus 4.1 - Practical Dev Comparison
 
-Built with Composio - Rube MCP.
+Built with [Rube MCP](https://rube.composio.dev) by [Composio](https://composio.dev)
 
 ### What this is
 Side-by-side comparison of OpenAI GPT-5 and Anthropic Claude Opus 4.1 on developer tasks, run in Cursor with Rube MCP. Full narrative and screenshots live in [blog.md](https://composio.dev/blog/gpt-5-vs-opus-4-1-code-comparison).
